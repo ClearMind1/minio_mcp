@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minio-mcp-server"
+version = "0.1.0"
+description = "FastMCP stdio server for uploading text/base64 content to MinIO"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "clearmind" }
+]
+dependencies = [
+  "fastmcp>=2.9.0",
+  "minio>=7.2.7"
+]
+
+[project.scripts]
+minio-mcp = "server:main"
+
+[tool.setuptools]
+py-modules = ["server"]
