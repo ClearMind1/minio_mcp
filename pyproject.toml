@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "minio-mcp-server"
-version = "0.1.1"
-description = "FastMCP stdio server for uploading base64 content to MinIO"
+version = "0.1.2"
+description = "FastMCP stdio server for uploading base64 content or file to MinIO"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [

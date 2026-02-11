@@ -88,6 +88,17 @@ which minio-mcp
 - `object_name`（可选，传入则覆盖自动生成策略）
 - `content_type`（可选，默认 `application/octet-stream`）
 
+### upload_file_to_minio
+
+上传本地文件到 MinIO。
+
+参数：
+- `file_path`：本地文件路径（必填）
+- `file_name`（可选，默认取 `file_path` 的文件名）
+- `bucket`（可选）
+- `object_name`（可选，传入则覆盖自动生成策略）
+- `content_type`（可选，默认自动按文件名猜测，失败则 `application/octet-stream`）
+
 ### 默认对象路径策略（防重名）
 
 未传 `object_name` 时，服务自动生成对象路径：

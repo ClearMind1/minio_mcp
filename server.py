@@ -1,6 +1,7 @@
 import base64
 from datetime import datetime
 import io
+import mimetypes
 import os
 from pathlib import Path
 import re
@@ -165,6 +166,36 @@ def upload_base64_to_minio(
         bucket=bucket,
         object_name=object_name,
         content_type=content_type,
+    )
+
+
+@mcp.tool
+def upload_file_to_minio(
+    file_path: str,
+    file_name: str | None = None,
+    bucket: str | None = None,
+    object_name: str | None = None,
+    content_type: str | None = None,
+) -> dict[str, Any]:
+    """把本地文件上传到 MinIO。"""
+    path = Path(file_path)
+    if not path.exists() or not path.is_file():
+        raise ValueError(f"file_path 不存在或不是文件: {file_path}")
+
+    data = path.read_bytes()
+    resolved_file_name = file_name or path.name
+    resolved_content_type = (
+        content_type
+        or mimetypes.guess_type(resolved_file_name)[0]
+        or "application/octet-stream"
+    )
+
+    return _upload_bytes_to_minio(
+        data=data,
+        file_name=resolved_file_name,
+        bucket=bucket,
+        object_name=object_name,
+        content_type=resolved_content_type,
     )
 
 
