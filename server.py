@@ -168,23 +168,23 @@ def upload_base64_to_minio(
     )
 
 
-@mcp.tool
-def upload_text_to_minio(
-    text: str,
-    file_name: str,
-    bucket: str | None = None,
-    object_name: str | None = None,
-    content_type: str = "text/plain; charset=utf-8",
-) -> dict[str, Any]:
-    """把文本内容上传到 MinIO。"""
-    raw = text.encode("utf-8")
-    return _upload_bytes_to_minio(
-        data=raw,
-        file_name=file_name,
-        bucket=bucket,
-        object_name=object_name,
-        content_type=content_type,
-    )
+# @mcp.tool
+# def upload_text_to_minio(
+#     text: str,
+#     file_name: str,
+#     bucket: str | None = None,
+#     object_name: str | None = None,
+#     content_type: str = "text/plain; charset=utf-8",
+# ) -> dict[str, Any]:
+#     """把文本内容上传到 MinIO。"""
+#     raw = text.encode("utf-8")
+#     return _upload_bytes_to_minio(
+#         data=raw,
+#         file_name=file_name,
+#         bucket=bucket,
+#         object_name=object_name,
+#         content_type=content_type,
+#     )
 
 
 def main() -> None:
