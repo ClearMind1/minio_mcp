@@ -130,6 +130,7 @@ PyPI仓库的链接填写
         "MINIO_ACCESS_KEY": "your-access-key",
         "MINIO_SECRET_KEY": "your-secret-key",
         "MINIO_SECURE": "false",
+        "MINIO_REGION": "us-east-1",
         "MINIO_DEFAULT_BUCKET": "your-bucket"
       },
       "disabled": false,
