@@ -77,17 +77,6 @@ which minio-mcp
 
 ## 5. 可用工具
 
-### upload_text_to_minio
-
-上传文本内容（UTF-8）到 MinIO。
-
-参数：
-- `text`：文本内容
-- `file_name`：原始文件名（系统会自动生成防重复对象路径）
-- `bucket`（可选）
-- `object_name`（可选，传入则覆盖自动生成策略）
-- `content_type`（可选，默认 `text/plain; charset=utf-8`）
-
 ### upload_base64_to_minio
 
 上传 base64 编码内容到 MinIO。
