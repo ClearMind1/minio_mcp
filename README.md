@@ -1,6 +1,6 @@
-# FastMCP + MinIO 远程上传服务（HTTP）
+# FastMCP + MinIO 上传服务（STDIO）
 
-这是一个基于 FastMCP 的 MCP 服务，使用 HTTP（streamable HTTP）方式对外提供工具，并把内容上传到 MinIO。
+这是一个基于 FastMCP 的 MCP 服务，使用 **STDIO** 方式对外提供工具，并把内容上传到 MinIO。
 
 ## 1. 安装依赖
 
@@ -29,15 +29,53 @@ copy .env.example .env
 - `MCP_HOST`：默认 `0.0.0.0`
 - `MCP_PORT`：默认 `8000`
 
-## 3. 启动服务
+## 3. 本地启动（调试）
 
 ```bash
 python server.py
 ```
 
-服务将以 FastMCP HTTP transport 启动。
+服务将以 FastMCP **STDIO transport** 启动。
 
-## 4. 可用工具
+## 4. 打包与安装（给其他服务器）
+
+本项目已提供 Python 打包文件 [`pyproject.toml`](pyproject.toml)，并暴露命令入口：`minio-mcp`。
+
+### 4.1 从 GitHub 安装（推荐）
+
+> 注意：必须使用 `git+` 前缀，否则会出现 *cannot detect archive format*。
+
+```bash
+pip install "git+https://github.com/ClearMind1/minio_mcp.git"
+```
+
+指定分支或标签：
+
+```bash
+pip install "git+https://github.com/ClearMind1/minio_mcp.git@main"
+# 或
+pip install "git+https://github.com/ClearMind1/minio_mcp.git@v0.1.0"
+```
+
+### 4.2 全局工具化安装（可选）
+
+```bash
+pipx install "git+https://github.com/ClearMind1/minio_mcp.git"
+# 或
+uv tool install "git+https://github.com/ClearMind1/minio_mcp.git"
+```
+
+安装后验证命令：
+
+```bash
+# Windows
+where minio-mcp
+
+# Linux / macOS
+which minio-mcp
+```
+
+## 5. 可用工具
 
 ### upload_text_to_minio
 
@@ -71,23 +109,49 @@ python server.py
 
 `uploads/2026/02/10/6c0ecb7d3e4f4d24a7f6f512a8d57f4f_hello.txt`
 
-## 5. 客户端连接示例
+## 6. AstrBot 下载使用
+使用webui上的pip下载，库名填写
+`git+https://github.com/ClearMind1/minio_mcp.git`
 
-```python
-import asyncio
-from fastmcp import Client
+PyPI仓库的链接填写
+`https://pypi.org/simple`
 
-async def main():
-    # 常见访问地址示例（按你的部署地址调整）
-    async with Client("http://127.0.0.1:8000/mcp") as client:
-        result = await client.call_tool(
-            "upload_text_to_minio",
-            {
-                "text": "hello minio",
-                "file_name": "hello.txt",
-            },
-        )
-        print(result)
+## 7. MCP 客户端配置示例（stdio）
 
-asyncio.run(main())
+```json
+{
+  "mcpServers": {
+    "minio": {
+      "type": "stdio",
+      "command": "minio-mcp",
+      "args": [],
+      "env": {
+        "MINIO_ENDPOINT": "127.0.0.1:9000",
+        "MINIO_ACCESS_KEY": "your-access-key",
+        "MINIO_SECRET_KEY": "your-secret-key",
+        "MINIO_SECURE": "false",
+        "MINIO_DEFAULT_BUCKET": "your-bucket"
+      },
+      "disabled": false,
+      "alwaysAllow": []
+    }
+  }
+}
+```
+
+如果不使用全局命令，也可以直接用 Python 启动：
+
+```json
+{
+  "mcpServers": {
+    "minio": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["server.py"],
+      "cwd": "d:/code/MCP/minio_mcp",
+      "disabled": false,
+      "alwaysAllow": []
+    }
+  }
+}
 ```
